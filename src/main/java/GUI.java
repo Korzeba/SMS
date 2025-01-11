@@ -1,59 +1,101 @@
-import org.example.models.ConnectDB; // Implementacjia klasy ConnectDB - łączenie z baza danych
-import javax.swing.*; // Implementacjia bibloteki JFrame - tworzenie GUI
-import java.awt.event.ActionEvent; // Implementacjia klasy ActionEvent do obsługi zdarzeń.
-import java.awt.event.ActionListener; // Implementacjia klasy ActionListener do implementacji obsługi zdarzeń.
-import java.sql.*; // Import klas do obsługi SQL i połączeń z DB.
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
-public class GUI extends JFrame implements ActionListener // Klasa dziedzicząca JFrame i implementacja ActionListener (używanie this przez cały kod)
-{
-    private final JLabel nameLabel, ageLabel, gradeLabel, studentIDLabel; //Labele - text
-    private final JTextField nameField, ageField, gradeField, studentIDField; //Pola textowe
-    private final JButton addStudent, removeStudent, updateStudent, displayAllStudents, calculateAverage; // Buttons
+public class GUI extends JFrame implements ActionListener {
+    private final JTextField nameField, ageField, gradeField, studentIDField;
+    private final JButton addStudent, removeStudent, updateStudent, displayAllStudents, calculateAverage;
+    private final StudentManager manager;
 
-    public GUI() {
-        JFrame frame = new JFrame("Zaawansowany system zarządzania studentami"); // Tytuł i stworzenie okna GUI
-        JPanel panel = new JPanel(); // Stworzenie panelu dla powyższych komponentów
+    public GUI(StudentManager manager) {
+        this.manager = manager;
 
-        // Inicjalizacja labelów tekstowych
-        nameLabel = new JLabel("Imie Studenta: ");
-        ageLabel = new JLabel("Wiek Studenta: ");
-        gradeLabel = new JLabel("Ocena Studenta: ");
-        studentIDLabel = new JLabel("ID Studenta : ");
-        // Inicjalizacja pól tekstowych
+        JFrame frame = new JFrame("Zaawansowany system zarządzania studentami");
+        JPanel panel = new JPanel();
+
         nameField = new JTextField(10);
         ageField = new JTextField(10);
         gradeField = new JTextField(10);
         studentIDField = new JTextField(10);
-        // Inicjalizacja przycisków i ich nazw
+
         addStudent = new JButton("Add Student");
         removeStudent = new JButton("Remove Student");
         updateStudent = new JButton("Update Student");
         displayAllStudents = new JButton("Display All Students");
         calculateAverage = new JButton("Calculate Average");
-        // Rejestracja przyciskow
+
         addStudent.addActionListener(this);
         removeStudent.addActionListener(this);
         updateStudent.addActionListener(this);
         displayAllStudents.addActionListener(this);
         calculateAverage.addActionListener(this);
-        // Dodanie komponentów do panelu
-        panel.add(nameLabel);
+
+        panel.add(new JLabel("Imie: "));
         panel.add(nameField);
-        panel.add(ageLabel);
+        panel.add(new JLabel("Wiek: "));
         panel.add(ageField);
-        panel.add(gradeLabel);
+        panel.add(new JLabel("Ocena: "));
         panel.add(gradeField);
-        panel.add(studentIDLabel);
+        panel.add(new JLabel("ID: "));
         panel.add(studentIDField);
         panel.add(addStudent);
         panel.add(removeStudent);
         panel.add(updateStudent);
         panel.add(displayAllStudents);
         panel.add(calculateAverage);
-        // Dodanie panelu do ramki
+
         frame.add(panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Zamykanie GUI na X
         frame.pack();
+        frame.setResizable(false);
         frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Zamykanie GUI na X
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (e.getSource() == addStudent)
+            {
+                Student student = new Student(studentIDField.getText(),
+                                              nameField.getText(),
+                                              Integer.parseInt(ageField.getText()),
+                                              Double.parseDouble(gradeField.getText()));
+                manager.addStudent(student);
+
+            }
+            else if (e.getSource() == removeStudent)
+            {
+                manager.removeStudent(studentIDField.getText());
+
+            }
+            else if (e.getSource() == updateStudent)
+            {
+                Student student = new Student(studentIDField.getText(),
+                                              nameField.getText(),
+                                              Integer.parseInt(ageField.getText()),
+                                              Double.parseDouble(gradeField.getText()));
+                manager.updateStudent(student);
+            }
+            else if (e.getSource() == displayAllStudents)
+            {
+                StringBuilder result = new StringBuilder("Lista Studentów:\n");
+                for (Student student : manager.getAllStudents())
+                {
+                    result.append("ID: ").append(student.getStudentID())
+                            .append(", Imię: ").append(student.getName())
+                            .append(", Wiek: ").append(student.getAge())
+                            .append(", Ocena: ").append(student.getGrade())
+                            .append("\n");
+                }
+                JOptionPane.showMessageDialog(this, result.toString());
+            }
+            else if (e.getSource() == calculateAverage)
+            {
+                JOptionPane.showMessageDialog(this, "Średnia ocena: " + manager.calculateAverageGrade());
+            }
+        } catch (SQLException | IllegalArgumentException ex) {
+            JOptionPane.showMessageDialog(this, "Błąd: " + ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

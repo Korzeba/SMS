@@ -1,14 +1,24 @@
-import org.example.models.ConnectDB; // Implementacjia klasy ConnectDB - łączenie z baza danych
-import javax.swing.*; // Implementacjia bibloteki JFrame - tworzenie GUI
-import java.sql.Connection; // Implementacja klasy potrzebnej do połączenia z DB
-import java.sql.SQLException; // Implementacja klasy potrzebnej do wyjątków SQL
-import java.sql.Statement;   // Implementacja klas potrzebnych do zapytan SQL
+import org.example.models.ConnectDB;
 
-public class Main
-{
-    public static void main(String[] args)
-    {
-        GUI window = new GUI(); // Tworzenie nowego GUI
-        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Zamykanie GUI na X
+import javax.swing.*;
+import java.sql.Connection;
+
+public class Main {
+    public static void main(String[] args) {
+        ConnectDB db = new ConnectDB();
+        db.initializeDatabase();
+
+        Connection connection = db.getConnection();  // Pobierz połączenie, ale nie zamykaj go
+        if (connection != null) {
+            try {
+                StudentManager manager = new StudentManagerImpl(connection);
+                GUI window = new GUI(manager);
+                window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Nie udało się nawiązać połączenia z bazą danych.");
+        }
     }
 }
