@@ -3,6 +3,16 @@ import org.example.models.ConnectDB;
 import javax.swing.*;
 import java.sql.Connection;
 
+/*
+Obiekt klasy ConnectDB (db) odpowiada za nawiązanie połączenia z bazą danych a Metoda initializeDatabase() sprawdza,
+czy tabela students istnieje, i tworzy ją w razie potrzeby.Po nawiązaniu połączenia za pomocą db.getConnection(),
+obiekt połączenia jest przekazywany do innych komponentów aplikacji.
+Tworzony jest obiekt StudentManagerImpl, który implementuje interfejs StudentManager a
+obiekt ten korzysta z nawiązanego wcześniej połączenia z bazą danych. Finalnie tworzony jest inasz interfejs urzytkownika.
+Główna metoda main() zawiera blok try-catch,
+który przechwytuje wszelkie wyjątki występujące podczas inicjalizacji aplikacji i wyświetla je na konsoli.
+ */
+
 public class Main {
     public static void main(String[] args) {
         ConnectDB db = new ConnectDB();
@@ -18,7 +28,7 @@ public class Main {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("Nie udało się nawiązać połączenia z bazą danych.");
+            System.out.println("Error Connecting to Database");
         }
     }
 }

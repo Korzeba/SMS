@@ -3,25 +3,26 @@ Instrukcje dotyczące kompilacji i uruchamiania aplikacji:
 2. Otwórz plik Main.java w wersji JDK 23.
 3. Skompiluj plik Main.java.
 
-Wyjaśnienia:
-Konstruktor w ConnectDB:
-Ustawia ścieżkę do DB SQLite (database.db).
-Używa DriverManager.getConnection() do otwarcia połączenia.
-Obsługuje potencjalne błędy, drukując je na konsolę w przypadku niepowodzenia.
-Metoda getConnection():
-Udostępnia obiekt Connection do pozostałych klas.
-Metoda closeConnection():
-Bezpiecznie zamyka połączenie z DB, jeśli jest otwarte.
-Obsługuje ewentualne błędy podczas zamykania połączenia.
-Pobieranie metadanych:
-ResultSetMetaData:
-Zawiera informacje o strukturze wyników zapytania, np. liczba kolumn i ich nazwy.
-Pobieranie danych z ResultSet:
-Iteracja przez wyniki zapytania (rs.next()) pozwala na dostęp do danych każdego wiersza.
-Wartości są pobierane jako obiekty ogólne (rs.getObject()), co pozwala na obsługę różnych typów danych.
-
 Przegląd funkcjonalności oferowanej przez system zarządzania studentami:
-1. Możliwość dodawania, usuwania i aktualizowania danych studentów.
-2. Możliwość wypisania całej listy lub średniej oceny wszystkich studentów.
-3.
+1. Możliwość dodawania i usuwania studentów.
+2. Możliwość aktualizowania wybrych danych studentów.
+3. Możliwość wypisania całej listy lub średniej oceny wszystkich studentów.
+4. Przestrzeganie zasad logiki.
 
+Opis poszczególnych klas:
+1. GUI - Graphic User Interface pełni dwie funkcje, zarówno definiuje strukture programu wyświetlanego w panelu oraz
+         działanie przycisków (actionPerformed(ActionEvent e)), jak i nadaje logikę całego modelu za pomocą klasy StudentManager.
+
+2. Student - Prosty model danych zawierający gettery i settery, zechowujący wszystkie niezbędne informacje o studencie potrzebne w innych klasach kodu.
+             IllegalArgumentException zapewnia, że obiekt klasy Student zawsze będzie poprawny.
+
+3. StudentManager - Interfejs definiuje standardowe operacje, które muszą być zaimplementowane przez klasę obsługującą dane studentów.
+
+4. StudentManagerImpl - Głównym celem klasy jest implementacja interfejsu StudentManager.
+                        Kod jest logicznie podzielony, a każda metoda odpowiada za jedną operację.
+
+5 ConnectDB - Cała logika związana z połączeniem z bazą danych jest skonsolidowana w jednej klasie.
+              Tabela students jest tworzona automatycznie, jeśli nie istnieje, co minimalizuje problemy z konfiguracją bazy.
+
+6 Main - Klasa Main pełni funkcję punktu startowego dla aplikacji. Jej głównym celem jest inicjalizacja bazy danych,
+         przygotowanie mechanizmów zarządzania studentami, oraz uruchomienie graficznego interfejsu użytkownika (GUI).

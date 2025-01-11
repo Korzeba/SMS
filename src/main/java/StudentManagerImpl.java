@@ -4,6 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Klasa korzystająca z JDBC, wykonująca operacje na tabeli Students w bazie danych database.db.
+Rozszerzona przez extends Component, w celu pomocy przy komunikatach JOptionPane.
+Klasa używa obiektu Connection do wykonywania zapytań SQL.
+Operacje na bazie danych są wykonywane w blokach try-with-resources.
+ */
+
 public class StudentManagerImpl extends Component implements StudentManager
 {
     private final Connection connection;
@@ -21,7 +28,7 @@ public class StudentManagerImpl extends Component implements StudentManager
             stmt.setInt(3, student.getAge());
             stmt.setDouble(4, student.getGrade());
             stmt.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Student został pomyślnie dodany.", "Sukces", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Student added successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
 
         }
     }
@@ -33,9 +40,9 @@ public class StudentManagerImpl extends Component implements StudentManager
             stmt.setString(1, studentID);
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Student został pomyślnie usunięty.", "Sukces", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Student deleted successfully..", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Nie znaleziono studenta o podanym ID.", "Ostrzeżenie", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Cannot find Student with this ID.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -50,9 +57,9 @@ public class StudentManagerImpl extends Component implements StudentManager
             stmt.setString(4, student.getStudentID());
             int rowsAffected = stmt.executeUpdate();
             if (rowsAffected > 0) {
-                JOptionPane.showMessageDialog(this, "Dane studenta zostały pomyślnie zaktualizowane.", "Sukces", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Data update successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Nie znaleziono studenta o podanym ID.", "Ostrzeżenie", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nie znaleziono studenta o podanym ID.", "ERROR", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
