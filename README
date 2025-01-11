@@ -1,0 +1,27 @@
+Instrukcje dotyczące kompilacji i uruchamiania aplikacji:
+1. Pobierz repozyorium.
+2. Otwórz plik Main.java w wersji JDK 23.
+3. Skompiluj plik Main.java.
+
+Wyjaśnienia:
+Konstruktor w ConnectDB:
+Ustawia ścieżkę do DB SQLite (database.db).
+Używa DriverManager.getConnection() do otwarcia połączenia.
+Obsługuje potencjalne błędy, drukując je na konsolę w przypadku niepowodzenia.
+Metoda getConnection():
+Udostępnia obiekt Connection do pozostałych klas.
+Metoda closeConnection():
+Bezpiecznie zamyka połączenie z DB, jeśli jest otwarte.
+Obsługuje ewentualne błędy podczas zamykania połączenia.
+Pobieranie metadanych:
+ResultSetMetaData:
+Zawiera informacje o strukturze wyników zapytania, np. liczba kolumn i ich nazwy.
+Pobieranie danych z ResultSet:
+Iteracja przez wyniki zapytania (rs.next()) pozwala na dostęp do danych każdego wiersza.
+Wartości są pobierane jako obiekty ogólne (rs.getObject()), co pozwala na obsługę różnych typów danych.
+
+Przegląd funkcjonalności oferowanej przez system zarządzania studentami:
+1. Możliwość dodawania, usuwania i aktualizowania danych studentów.
+2. Możliwość wypisania całej listy lub średniej oceny wszystkich studentów.
+3.
+
